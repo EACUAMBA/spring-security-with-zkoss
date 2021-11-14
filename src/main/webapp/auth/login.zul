@@ -1,0 +1,20 @@
+<zk xmlns:html="http://www.w3.org/1999/xhtml">
+    <vbox vflex="1" hflex="1" pack="center" align="center">
+        <html:form method="post" action="execute_login">
+            <html:div>
+                <html:p>Username:</html:p>
+                <html:input type="text" name="username"/>
+            </html:div>
+
+            <html:div style="height: 20px"/>
+
+            <html:div>
+                <html:p>Password:</html:p>
+                <html:input type="text" name="password"/>
+            </html:div>
+
+            <html:div style="height: 20px"/>
+            <html:button value="entrar">entrar</html:button>
+        </html:form>
+    </vbox>
+</zk>

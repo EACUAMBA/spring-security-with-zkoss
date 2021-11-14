@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xsi:schemaLocation="
+        http://www.springframework.org/schema/security
+        http://www.springframework.org/schema/security/spring-security-5.3.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <http use-expressions="true" auto-config="true">
+        <csrf disabled="true"/>
+
+        <intercept-url pattern="/secured/**" access="isAuthenticated()"/>
+        <intercept-url pattern="/auth/**" access="permitAll()"/>
+        <intercept-url pattern="/**" access="permitAll()"/>
+
+        <form-login login-page="/auth/login.zul"  login-processing-url="/auth/execute_login" default-target-url="/index.zul" authentication-failure-url="/auth/login.zul?error=true" always-use-default-target="false" authentication-success-forward-url="/secured/"/>
+        <logout logout-success-url="/index.zul"/>
+    </http>
+
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="$2a$12$MPfQyoZDkvB87tQ8XHdw8OhAtFVrFYAGkal2DszDW8bYhmDmz8Bgm" authorities="ROLE_ADMIN"/>
+            </user-service>
+            <password-encoder ref="encoder"/>
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+
+    </beans:bean>
+</beans:beans>

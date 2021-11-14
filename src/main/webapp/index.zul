@@ -1,0 +1,11 @@
+<zk>
+    <vbox pack="center" align="center" hflex="1" vflex="1" style="background: whitesmoke;">
+        <label>
+            Olá mundo com zk e Spring Security.
+        </label>
+        <separator height="50"/>
+        <label>
+            Está é uma página aberta que não necessita de login para acessar.
+        </label>
+    </vbox>
+</zk>
