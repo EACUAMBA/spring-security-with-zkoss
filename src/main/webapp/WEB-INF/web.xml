@@ -11,26 +11,33 @@
         id="WebApp_ID"
         version="2.5">
     <display-name>Archetype Created Web Application</display-name>
-    
-    <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
 
-<!--
-begin - DispatcherServlet - Spring Framework - é um ponto de entrada para o Spring MVC application. O Objetivo é de interceptor requisições HTTP e despachar para o component certo, que sabe como vai manipular, como usar.
 
-Agora todas requisições feitas para context/ serão direcionadas para o Servlet do Spring
--->
+<!--    <filter>-->
+<!--        <filter-name>OpenEntityManagerInViewFilter-->
+<!--        </filter-name>-->
+<!--        <filter-class>-->
+<!--            org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter-->
+<!--        </filter-class>-->
+<!--    </filter>-->
+<!--    <filter-mapping>-->
+<!--        <filter-name>OpenEntityManagerInViewFilter</filter-name>-->
+<!--        <url-pattern>/*</url-pattern>-->
+<!--    </filter-mapping>-->
+
+
+    <!--
+    begin - DispatcherServlet - Spring Framework - é um ponto de entrada para o Spring MVC application. O Objetivo é de interceptor requisições HTTP e despachar para o component certo, que sabe como vai manipular, como usar.
+
+    Agora todas requisições feitas para context/ serão direcionadas para o Servlet do Spring
+    -->
     <servlet>
         <servlet-name>dispatcher</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
             <param-value>
-                /WEB-INF/applicationContext.xml,
+                /WEB-INF/applicationContext.xml
                 /WEB-INF/applicationContext-security.xml
             </param-value>
         </init-param>
@@ -53,7 +60,14 @@ Agora todas requisições feitas para context/ serão direcionadas para o Servle
     </filter-mapping>
 <!--    end - Spring Security-->
 
-    
+
+<!--    <listener>-->
+<!--        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>-->
+<!--    </listener>-->
+<!--    <listener>-->
+<!--        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>-->
+<!--    </listener>-->
+
 
     <welcome-file-list>
         <welcome-file>index.zul</welcome-file>

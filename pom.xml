@@ -185,6 +185,11 @@
             <artifactId>hibernate-core</artifactId>
             <version>5.6.1.Final</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-entitymanager</artifactId>-->
+<!--            <version>4.0.0.Final</version>-->
+<!--        </dependency>-->
         <!--end - hibernate-->
 
         <!--        begin - MySQL Connector-->
