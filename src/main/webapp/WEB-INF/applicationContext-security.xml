@@ -8,29 +8,67 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
-    <http use-expressions="true" auto-config="true">
+    <!-- Para capturar anotações como  @Secured em métodos-->
+    <!-- Diz ao motor do Spring Security que vamos usar -->
+    <!-- pre e post invocação Java anotações (@PreFilter, @PreAuthorize, -->
+    <!-- @PostFilter, -->
+    <!-- @PostAuthorize) para segurar a métodos da camada de serviço.. -->
+    <!-- Look in GFCBaseCtrl.java onEvent() method. -->
+    <!-- ====================================================== -->
+
+    <!-- Enable the @Secured annotation to secure service layer methods -->
+    <global-method-security secured-annotations="enabled" />
+
+    <beans:bean id="loginUrlAuthenticationEntryPoint"
+                class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+        <beans:constructor-arg name="loginFormUrl" value="/auth/login.zul"/>
+
+    </beans:bean>
+
+    <beans:bean id="failureHandler"
+                class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+        <beans:property name="defaultFailureUrl" value="/auth/login.zul?login_error=1" />
+    </beans:bean>
+
+    <beans:bean id="languageFilter"
+                class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+        <beans:property name="authenticationManager" ref="authenticationManager" />
+        <beans:property name="authenticationFailureHandler"
+                        ref="failureHandler" />
+        <beans:property name="filterProcessesUrl" value="/auth/execute_login"/>
+    </beans:bean>
+
+    <beans:bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+        <beans:property name="filterProcessesUrl" value="/auth/logout"/>
+        <beans:constructor-arg name="logoutSuccessUrl" value="/index.zul"/>
+        <beans:constructor-arg name="handlers">
+            <beans:list>
+                <beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+            </beans:list>
+        </beans:constructor-arg>
+    </beans:bean>
+
+
+    <http entry-point-ref="loginUrlAuthenticationEntryPoint">
         <csrf disabled="true"/>
-
+        <intercept-url pattern="/auth/**" access="permitAll()" />
         <intercept-url pattern="/secured/**" access="isAuthenticated()"/>
-        <intercept-url pattern="/auth/**" access="permitAll()"/>
         <intercept-url pattern="/**" access="permitAll()"/>
+        <intercept-url pattern="/*.zul" access="isAuthenticated()" />
+        <intercept-url pattern="/zk/*" access="isAuthenticated()" />
+        <custom-filter position="FORM_LOGIN_FILTER" ref="languageFilter" />
+        <custom-filter position="LOGOUT_FILTER" ref="logoutFilter"/>
 
-        <form-login login-page="/auth/login.zul"  login-processing-url="/auth/execute_login" default-target-url="/index.zul" authentication-failure-url="/auth/login.zul?error=true" always-use-default-target="false" authentication-success-forward-url="/secured/"/>
-        <logout logout-success-url="/index.zul"/>
+<!--        <form-login login-page="/auth/login.zul"  login-processing-url="/auth/execute_login" default-target-url="/index.zul" authentication-failure-url="/auth/login.zul?error=true" always-use-default-target="false" />-->
+<!--        <logout logout-success-url="/index.zul" logout-url="/logout"/>-->
     </http>
 
-    <authentication-manager>
+    <authentication-manager alias="authenticationManager">
         <authentication-provider user-service-ref="userService">
-<!--            <user-service>-->
-<!--                <user name="admin" password="$2a$12$MPfQyoZDkvB87tQ8XHdw8OhAtFVrFYAGkal2DszDW8bYhmDmz8Bgm" authorities="ROLE_ADMIN"/>-->
-<!--            </user-service>-->
-            <password-encoder ref="encoder"/>
+            <password-encoder ref="encoder" />
         </authentication-provider>
     </authentication-manager>
 
     <beans:bean id="userService" class="com.eacuamba.spring_security_with_zkoss.domain.service.UserService"/>
-
-    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-
-    </beans:bean>
+    <beans:bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans:beans>

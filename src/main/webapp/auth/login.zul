@@ -1,20 +1,48 @@
-<zk xmlns:html="http://www.w3.org/1999/xhtml">
-    <vbox vflex="1" hflex="1" pack="center" align="center">
-        <html:form method="post" action="execute_login">
-            <html:div>
-                <html:p>Username:</html:p>
-                <html:input type="text" name="username"/>
-            </html:div>
+<?page id="loginPage" title="Digital medical sheet - Login page" onLoad="win.doOverlapped();"?>
+<window id="win" title="LOGIN" border="normal" width="300px"
+        position="center">
 
-            <html:div style="height: 20px"/>
+    <!-- this form-login-page form is also used as the
+        form-error-page to ask for a login again. -->
+    <html style="color:red" if="${not empty param.login_error}">
 
-            <html:div>
-                <html:p>Password:</html:p>
-                <html:input type="text" name="password"/>
-            </html:div>
 
-            <html:div style="height: 20px"/>
-            <html:button value="entrar">entrar</html:button>
-        </html:form>
-    </vbox>
-</zk>
+        <![CDATA[ Your login attempt was not successful, try
+		again.<br/><br/> Reason:
+		${SPRING_SECURITY_LAST_EXCEPTION.message} ]]>
+
+
+    </html>
+
+    <groupbox>
+        <caption>Login</caption>
+        <h:form action="execute_login"
+                method="post" xmlns:h="http://www.w3.org/1999/xhtml">
+            <grid>
+                <columns sizable="false">
+                    <column width="50%" />
+                    <column width="50%" />
+                </columns>
+                <rows>
+                    <row>
+                        <label value="User:" />
+                        <textbox id="u" name="username" />
+                    </row>
+                    <row>
+                        <label value="Password:" />
+                        <textbox id="p" type="password"
+                                 name="password" />
+                    </row>
+
+                    <row spans="2">
+                        <div align="center">
+                            <button type="submit" label="entrar"/>
+                            <h:input type="submit" value="Entrar" class="" />
+                            <h:input type="reset" value="Limpar" />
+                        </div>
+                    </row>
+                </rows>
+            </grid>
+        </h:form>
+    </groupbox>
+</window>
